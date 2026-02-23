@@ -1,22 +1,36 @@
-# 📊 iTunes Dataset Cleaning & Preparation Report
-
+# iTunes Dataset Cleaning, Validation & Preparation Report
 ## Project: iTunes Music Dataset Analysis
+
 Prepared By: @vaibhavdevangan
-Date: 21/02/2026
+Date: 23/02/2026
 
 ### 1. Introduction
 
-This report documents the data cleaning and preparation process performed on the iTunes dataset. The cleaned dataset is ready for exploratory data analysis (EDA), feature engineering, and predictive modeling tasks.
+This report documents the complete data cleaning, structural validation, and preparation process performed on the iTunes dataset.
+
+The objective was to:
+
+Clean and standardize the raw dataset
+
+Validate structural consistency (album vs track logic)
+
+Prepare a finalized analytics-ready dataset
+
+Enable dashboarding and visualization
+
+The final dataset is ready for EDA, dashboard creation, and advanced modeling.
 
 ### 2. Dataset Overview
 
 Original Rows: 4,915
-
 Original Columns: 15
 
-Columns Retained After Cleaning: 9
+After cleaning and filtering:
 
-Remaining Columns:
+Final Rows: 4,538
+Final Columns Used for Analytics: 9
+
+Columns Retained
 
 track_id
 
@@ -36,69 +50,152 @@ release_date
 
 track_time_millis
 
-### 3. Cleaning & Preprocessing Steps
+### 3. Data Cleaning & Preprocessing Steps
+3.1 Dropped Columns
 
-Dropped Columns
-Removed irrelevant or non-informative columns:
-album_artist, currency, preview_url, artwork_url, country, rating.
+Removed irrelevant or non-informative fields:
 
-Handled Invalid Values
+album_artist
 
-Replaced invalid prices -1 in track_price and collection_price with NaN.
+currency
 
-Converted Data Types
+preview_url
 
-Column	Type Conversion
-track_id	string/object
+artwork_url
+
+country
+
+rating
+
+3.2 Invalid Value Handling
+
+Replaced invalid price values (-1) in:
+
+track_price
+
+collection_price
+
+Converted them to NaN
+
+3.3 Missing Value Handling
+
+Removed rows where both track_price and collection_price were missing
+
+Remaining minor missing values were retained due to low proportion
+
+Final missing summary (after cleaning):
+
+artist_name → 2
+
+release_date → 48
+
+These were retained as they do not materially affect pricing or structural analysis.
+
+3.4 Data Type Conversions
+Column	Final Data Type
+track_id	object
 track_price	float64
 collection_price	float64
 release_date	datetime64[ns, UTC]
 track_time_millis	int64
+### 4. Structural Validation Checks
 
-Missing Values Check
+Before visualization, key structural tests were performed:
 
-Column	Missing Values	Decision
-artist_name	2	Retain
-track_price	409	Retain
-collection_price	402	Retain
-release_date	48	Retain
+4.1 Album Price Consistency
 
-Reason for not handling missing values: Proportion of missing data is small; it will not significantly impact initial analysis.
+24 albums were found to have multiple collection prices
 
-Dataset Summary (Numeric Columns)
+Indicates minor structural inconsistency in album-level pricing
 
-Column	Count	Mean	Min	Max
-track_price	4506	1.214	0.69	1.29
-collection_price	4513	8.678	0.69	119.99
-track_time_millis	4915	239568	30503	4676058
-### 4. Output
+4.2 Album Size Distribution
 
-Cleaned Dataset: cleaned_data.csv
+Mean tracks per album ≈ 1.69
 
-Export Note: index=False used to avoid writing row numbers to the CSV.
+Albums with 1 track: 2,133
 
-### 5. Next Steps
+Albums with 100+ tracks: 0
 
-Exploratory Data Analysis (EDA)
+Interpretation:
+The dataset is primarily track-centric, not album-centric.
 
-Visualize distributions of numeric and categorical features
+4.3 Extreme Pricing Validation
 
-Identify outliers and anomalies
+Maximum collection price: $119.99
 
-Study feature relationships
+Corresponding track count: 1
 
-Feature Engineering & Preprocessing
+This confirms that pricing is not strictly tied to album size.
 
-Encode categorical variables
+### 5. Feature Engineering for Analytics
 
-Scale numeric features
+Additional derived columns were created:
 
-Handle remaining missing values if necessary
+track_duration_min → track_time_millis converted to minutes
 
-Predictive Modeling & Insights
+price_tier → categorized pricing (Budget / Standard / Premium)
 
-Regression or classification modeling
+These were added to support dashboard visualization.
 
-Extract actionable insights on tracks, collections, pricing, and genre trends
+### 6. Key Analytical Findings from Visualization
+6.1 Pricing Model
 
-✅ This cleaned dataset is now ready for analytics pipelines and subsequent ML model development.
+Pricing is concentrated in fixed tiers
+
+No strong relationship between duration and track price
+
+Indicates a standardized pricing model
+
+6.2 Duration Pattern
+
+Most tracks range between 3–4 minutes
+
+Duration is relatively standardized across genres
+
+6.3 Genre Concentration
+
+Bollywood and Pop dominate track volume
+
+Sharp drop after top 2 genres
+
+Long-tail genres have limited representation
+
+Conclusion:
+The platform operates as a standardized, tier-based single-track digital marketplace with strong mainstream genre concentration.
+
+### 7. Output
+
+Final Exported Dataset:
+itunes_cleaned_analytics.csv
+
+Export configuration:
+
+index=False used to prevent row index inclusion
+
+This dataset is dashboard-ready.
+
+### 8. Next Steps
+
+Build Power BI / Tableau dashboard
+
+Perform statistical hypothesis testing
+
+Time-series analysis on release trends
+
+Advanced pricing or genre modeling
+
+ ### Final Status
+
+The dataset has been:
+
+Cleaned
+
+Structurally validated
+
+Feature engineered
+
+Visualized
+
+Exported for analytics
+
+It is fully prepared for dashboarding and advanced analytical workflows.
