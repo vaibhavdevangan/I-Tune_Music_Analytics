@@ -1,6 +1,6 @@
 # 📊 iTunes Dataset Cleaning & Preparation Report
 
-## Project: iTunes Dataset Analysis
+## Project: iTunes Music Dataset Analysis
 Prepared By: @vaibhavdevangan
 Date: 21/02/2026
 
